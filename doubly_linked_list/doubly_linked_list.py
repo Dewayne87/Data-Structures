@@ -44,25 +44,118 @@ class DoublyLinkedList:
     return self.length
 
   def add_to_head(self, value):
-    pass
+    newNode = ListNode(value)
+    if self.head == None:
+      self.head = newNode
+      self.tail = self.head
+      self.length += 1 
+    else:
+      self.head.insert_before(value)
+      self.head = self.head.prev
+      self.length += 1 
+
 
   def remove_from_head(self):
-    pass
+    value = None
+    if self.head == None:
+      value = None
+    elif self.head == self.tail:
+      value = self.head.value
+      self.head = None
+      self.tail = None
+      self.length -= 1 
+
+    else:
+      value = self.head.value
+      newHead = self.head.next
+      self.head.delete()
+      self.head = newHead
+      self.length -= 1 
+    return value
 
   def add_to_tail(self, value):
-    pass
+    newNode = ListNode(value)
+    if self.head == None:
+      self.head = newNode
+      self.tail = self.head
+      self.length += 1 
+    else:
+      self.tail.insert_after(value)
+      self.tail = self.tail.next
+      self.length += 1 
+      
 
   def remove_from_tail(self):
-    pass
+    value = None
+    if self.head == None:
+      value = None
+    elif self.head == self.tail:
+      value = self.tail.value
+      self.head = None
+      self.tail = None
+      self.length -= 1 
+
+    else:
+      value = self.tail.value
+      newTail = self.tail.prev
+      self.tail.delete()
+      self.tail = newTail
+      self.length -= 1 
+
+    return value
 
   def move_to_front(self, node):
-    pass
-
+    self.head.prev,node.prev = node,self.head.prev
+    node.next = self.head
+    self.head = self.head.prev
   def move_to_end(self, node):
-    pass
+      if node == self.head:
+        self.head = self.head.next
+        self.head.prev = None
+      node.prev = self.tail
+      node.next = None
+      self.tail.next = node
+      self.tail = node
+      return node
 
   def delete(self, node):
-    pass
+    curNode = self.head
+    if curNode == None:
+      return None 
+    if node == self.head and self.head == self.tail:
+      self.head = None
+      self.tail = None
+      self.length -= 1 
+      return node
+    if node == self.head:
+      newHead = self.head.next
+      self.head.delete()
+      self.head = newHead
+      self.length -= 1 
+      return node
+    if node == self.tail:
+      newTail = self.tail.prev
+      self.tail.delete()
+      self.tail = newTail
+      self.length -= 1  
+      return node
+    while curNode != None:
+      if curNode == node:
+        curNode.prev.next,curNode.next.prev = curNode.next,curNode.prev
+        self.length -= 1
+        return node
+      curNode = curNode.next
+    return None
+
     
   def get_max(self):
-    pass
+    curMax = 0
+    if self.head == None:
+      return curMax
+    curNode = self.head
+    while curNode != None:
+      if curNode.value > curMax:
+        curMax = curNode.value
+      curNode = curNode.next
+    return curMax
+    
